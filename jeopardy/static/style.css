@@ -1,0 +1,68 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+html {
+   background: url("http://www.slotsumo.com/wp-content/uploads/2015/03/jeopardy_slot_bg.jpg") no-repeat center fixed;
+   background-size: 100% 100%;
+   overflow: hidden;
+}
+body {
+  color: white;
+  text-align: center; 
+}
+#title{
+  margin-top: 10%;
+  width: auto;
+  height: auto;
+}
+#startform {
+  position:static;
+  bottom: 50%;
+  left: 25%;
+  right: 25%;
+  margin: auto;
+  margin-bottom: 25%;
+  width: 50%;
+}
+#startbuttons {
+  width: 50% 50%;
+  margin: auto;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 10%;
+}
+.gamestart {
+  font-family: "Swiss911W01-ExtraCompressed";
+  color: #ffcb2f;
+  background-color: Blue;
+  border-color: #262626;
+  border-width: 5px;
+  border-style: outset;
+  padding: 5px 10px;
+  font-size: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.gamestart:active {
+  border-style: inset;
+  border-color: #262626;
+}
+
+@import {
+  url(http://db.onlinewebfonts.com/c/871fe0d078853d778f22b83af5c27159?family=ITCKorinnaW01-Regular);
+  url(http://db.onlinewebfonts.com/c/168cb827a28ad8dceaeadb1f36af0693?family=Swiss911W01-ExtraCompressed);
+}
+
+@font-face {
+  font-family: "ITCKorinnaW01-Regular";
+  src: url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.eot");
+  src: url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.eot?#iefix") format("embedded-opentype"), url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.woff2") format("woff2"), url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.woff") format("woff"), url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.ttf") format("truetype"), url("http://db.onlinewebfonts.com/t/871fe0d078853d778f22b83af5c27159.svg#ITCKorinnaW01-Regular") format("svg");
+}
+
+@font-face {
+  font-family: "Swiss911W01-ExtraCompressed";
+  src: url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.eot");
+  src: url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.eot?#iefix") format("embedded-opentype"), url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.woff2") format("woff2"), url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.woff") format("woff"), url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.ttf") format("truetype"), url("http://db.onlinewebfonts.com/t/168cb827a28ad8dceaeadb1f36af0693.svg#Swiss911W01-ExtraCompressed") format("svg");
+}

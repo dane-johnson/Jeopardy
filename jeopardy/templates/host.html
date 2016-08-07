@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body %}
+<span id=status>Awaiting room code.</span>
+<div id=code></div>
+<ul id=joined_players>
+</ul>
+{% endblock %}
+{% block script %}
+<script type=text/javascript>
+	$status = $("#status");
+	$code = $("#code");
+	$players = $("#joined_players")
+	socket = io();
+	socket.emit('host game');
+	socket.on('room created', function(code)
+	{
+		$status.text("Awaiting players.");
+		$code.text(code);
+	});
+	socket.on('player joined', function(name)
+	{
+		$players.append("<li>" + name + "</li>");
+	});
+</script>
+{% endblock %}
