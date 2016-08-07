@@ -1,6 +1,7 @@
 #Lot of imports, buckle up
 import os
 import rooms
+from rooms import Room
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, escape
 from flask_socketio import SocketIO, send, emit, join_room
 
@@ -8,7 +9,7 @@ from flask_socketio import SocketIO, send, emit, join_room
 app = Flask(__name__)
 app.config.from_object(__name__)
 socketio = SocketIO(app)
-active_rooms = []
+active_rooms = {}
 
 #Load default config and override config from an environment variable
 app.config.update(dict(
@@ -37,18 +38,17 @@ def join_game():
 def connect_player():
   room_code = escape(request.args.get('room_code'))
   name = escape(request.args.get('name'))
-  print 'Player %s wants to join room %s' % (name, room_code)
   if request.args.get('host', False):
     pass
     #TODO add alex feature
   socketio.emit('player joined', name, room=room_code)
-  return "<h1>LOBBY</h1>"
+  return render_template("lobby.html")
 @socketio.on('host game')
 def setup_room():
-	room = rooms.generate_room_name(active_rooms)
-	active_rooms.append(room)
-	join_room(room)
-	emit('room created', room, room=room)
+	name = rooms.generate_room_name(active_rooms)
+	active_rooms[name] = Room(name)
+	join_room(name)
+	emit('room created', name, room=name)
 @socketio.on('disconnect')
 def handle_disconnect():
 	print 'User disconnected'
