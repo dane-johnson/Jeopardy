@@ -2,6 +2,7 @@
 import os
 import rooms
 from rooms import Room
+from player import Player
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, escape
 from flask_socketio import SocketIO, send, emit, join_room
 
@@ -17,6 +18,8 @@ app.config.update(dict(
 	))
 
 app.config.from_envvar("JEOPARDY_SETTINGS", silent = True)
+
+#Frontend
 @app.route('/')
 @app.route('/index')
 def welcome():
@@ -36,19 +39,33 @@ def join_game():
 	return render_template("join.html")
 @app.route('/lobby')
 def connect_player():
-  room_code = escape(request.args.get('room_code'))
-  name = escape(request.args.get('name'))
+  room_code = str(escape(request.args.get('room_code')).striptags())
+  name = str(escape(request.args.get('name')).striptags())
   if request.args.get('host', False):
     pass
     #TODO add alex feature
+  session['room'] = room_code
+  session['username'] = name
+  active_rooms[room_code] + Player(name)
   socketio.emit('player joined', name, room=room_code)
   return render_template("lobby.html")
+
+
+#Backend
 @socketio.on('host game')
 def setup_room():
 	name = rooms.generate_room_name(active_rooms)
 	active_rooms[name] = Room(name)
 	join_room(name)
 	emit('room created', name, room=name)
+@socketio.on('user entered lobby')
+def send_members(join_data):
+  room = active_rooms[join_data['room']]
+  join_room(room.name)
+  data = []
+  for player in room.players:
+    data.append(player.name)
+  emit('users in lobby', data, room=room.name);
 @socketio.on('disconnect')
 def handle_disconnect():
 	print 'User disconnected'
