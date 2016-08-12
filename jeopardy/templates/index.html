@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+	<title>Jeopardy</title>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+</head>
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='socket.io.js') }}"></script>
+<body>
+	<div id=dynamic></div>
+</body>
+<script src="{{ url_for('static', filename='jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='utils.js') }}"></script>
+<script>
+	switchView("/views/splash.html");;
+</script>

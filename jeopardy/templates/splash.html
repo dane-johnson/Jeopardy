@@ -1,0 +1,8 @@
+<h1>Jeopardy!</h1>
+<button type=button id=host>Host Game</button>
+<button type=button id=join>Join Game</button>
+
+<script>
+	$("button#host").on('click', function(){switchView('/views/host.html');});
+	$("button#join").on('click', function(){switchView('/views/join.html');});
+</script>

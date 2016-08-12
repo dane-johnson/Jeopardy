@@ -18,6 +18,9 @@ app.config.update(dict(
 @app.route('/index')
 def index():
 	return render_template("index.html")
+@app.route('/views/<path:filename>')
+def view(filename):
+  return render_template(filename)
   
   
 if __name__ == '__main__':
