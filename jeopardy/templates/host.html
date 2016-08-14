@@ -1,11 +1,20 @@
 <h1>Lobby</h1>
 <span id=status>Awaiting room code.</span>
+<span>Joined players</span>
+<ul id=player_list></ul>
 
 <script>
 	var socket = io();
+
 	socket.on("room created", function(name)
 	{
 		$("#status").text("The room code is " + name);
 	});
+
+	socket.on("accept player", function(name)
+	{
+		$("ul#player_list").append("<li>" + name + "</li>");
+	});
+
 	socket.emit("create room");
 </script>

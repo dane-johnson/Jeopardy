@@ -11,7 +11,7 @@
 
 <script>
 	var socket=io();
-	socket.on("accept player", function()
+	socket.on("accept player", function(name)
 	{
 		console.log("I have been accepted by the server");
 	});
