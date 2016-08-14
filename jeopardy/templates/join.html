@@ -1,1 +1,23 @@
-<h1>JOIN</h1>
+<h1>Join Game</h1>
+<form>
+<label for=room_code>Room Code:</label>
+<input type=text name=room_code>
+<label for=name>Name:</label>
+<input type=text name=username>
+<label for=host>Host?</label>
+<input type=checkbox value=off name=host>
+<input type=button name=submit value=Go>
+</form>
+
+<script>
+	var socket=io();
+	socket.on("accept player", function()
+	{
+		console.log("I have been accepted by the server");
+	});
+	$("input[name=submit]").on('click', function()
+	{
+		var data = {username:$("input[name=username]").val(), room_code:$("input[name=room_code]").val()};
+		socket.emit("player joined", data);
+	});
+</script>

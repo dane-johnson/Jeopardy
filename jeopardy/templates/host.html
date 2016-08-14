@@ -1,1 +1,11 @@
-<h1>HOST</h1>
+<h1>Lobby</h1>
+<span id=status>Awaiting room code.</span>
+
+<script>
+	var socket = io();
+	socket.on("room created", function(name)
+	{
+		$("#status").text("The room code is " + name);
+	});
+	socket.emit("create room");
+</script>
