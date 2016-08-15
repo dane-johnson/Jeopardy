@@ -10,5 +10,5 @@ jQuery and SocketIO are [included](./jeopardy/static/), and instructions to inst
   
 - flask-SocketIO
 
-  flask-SocketIO can be installed by executing `pip install flask-socketio'
+  flask-SocketIO can be installed by executing `pip install flask-socketio`
   Additionally, for optimal speed, execute `pip install eventlet`
