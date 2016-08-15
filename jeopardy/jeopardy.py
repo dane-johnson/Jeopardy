@@ -39,7 +39,7 @@ def add_player(data):
 		join_room(room_code)
 		# Find out if this player is the host or a contestant
 		if(data['host']):
-			emit("host accepted")
+			emit("accept host")
 			active_rooms[room_code].add_host()
 		else:
 			name = data['username']

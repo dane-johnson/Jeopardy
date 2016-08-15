@@ -5,7 +5,7 @@
 <label for=username>Name:</label>
 <input type=text name=username>
 <label for=host>Host?</label>
-<input type=checkbox value=off name=host>
+<input type=checkbox name=host>
 <input type=button name=submit value=Go>
 </form>
 
@@ -13,6 +13,13 @@
 
 	var room_code;
 	var name;
+
+	socket.on("accept host", function()
+	{
+		//Make sure the accept player event does not fire
+		socket.removeListener("accept player");
+		switchView('/views/host_console.html');
+	});
 
 	socket.on("accept player", function()
 	{
@@ -27,7 +34,7 @@
 
 	$("input[name=submit]").on('click', function()
 	{
-		var host = $("input[name=host]").val() == "on";
+		var host = $("input[name=host]").is(":checked");
 		var data = {username:$("input[name=username]").val(), room_code:$("input[name=room_code]").val(), host:host};
 		socket.emit("player joined", data);
 	});
