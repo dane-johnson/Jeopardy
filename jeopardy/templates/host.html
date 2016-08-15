@@ -4,8 +4,6 @@
 <ul id=player_list></ul>
 
 <script>
-	var socket = io();
-
 	socket.on("room created", function(name)
 	{
 		$("#status").text("The room code is " + name);

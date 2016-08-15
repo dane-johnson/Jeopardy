@@ -27,6 +27,9 @@ class Room:
 	@property
 	def is_ready(self):
 		return self._has_host and self._has_contestants
+	@property 
+	def contestants(self):
+		return self._contestants
 
 
 class Contestant:
@@ -40,3 +43,6 @@ class Contestant:
 	def __isub__(self, new_money):
 		"""Overridden to allow for quick removal of cash"""
 		self._money -= new_money
+	@property
+	def name(self):
+		return self._name

@@ -2,7 +2,7 @@
 <form>
 <label for=room_code>Room Code:</label>
 <input type=text name=room_code>
-<label for=name>Name:</label>
+<label for=username>Name:</label>
 <input type=text name=username>
 <label for=host>Host?</label>
 <input type=checkbox value=off name=host>
@@ -10,14 +10,30 @@
 </form>
 
 <script>
-	var socket=io();
-	socket.on("accept player", function(name)
+
+	var room_code;
+	var name;
+
+	socket.on("accept player", function()
 	{
-		console.log("I have been accepted by the server");
+		console.log("I have been accepted")
+		room_code = $("input[name=room_code]").val();
+		name = $("input[name=username]").val();
+		console.log("I am " + name + " in room " + room_code);
+		//Remove the listener so the globals won't be overridden
+		socket.removeListener("accept player");
+		switchView('/views/lobby.html');
 	});
+
 	$("input[name=submit]").on('click', function()
 	{
-		var data = {username:$("input[name=username]").val(), room_code:$("input[name=room_code]").val()};
+		var host = $("input[name=host]").val() == "on";
+		var data = {username:$("input[name=username]").val(), room_code:$("input[name=room_code]").val(), host:host};
 		socket.emit("player joined", data);
 	});
+	$("input[name=host]").on('click', function()
+	{
+		$("input[name=username]").toggle();
+		$("label[for=username]").toggle();
+	})
 </script>

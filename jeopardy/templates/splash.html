@@ -3,6 +3,7 @@
 <button type=button id=join>Join Game</button>
 
 <script>
+	var socket = io();
 	$("button#host").on('click', function(){switchView('/views/host.html');});
 	$("button#join").on('click', function(){switchView('/views/join.html');});
 </script>

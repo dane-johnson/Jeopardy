@@ -1,0 +1,26 @@
+<h1></h1>
+<h2>Other players in room:</h2>
+<ul></ul>
+
+<script>
+	console.log("I am now in the lobby.");
+	console.log("I am " + name + " in room " + room_code);
+	$("h1").text(name + ", you are in the room " + room_code);
+	socket.on("player list", function(data)
+	{
+		console.log(data);
+		for (var i = 0; i < data.length; i++)
+		{
+			if(data[i] != name)
+			{
+				$("ul").append("<li>" + data[i] + '</li>');
+			}
+		}
+	});
+	socket.on("accept player", function(player_name)
+	{
+		console.log("appending name")
+		$("ul").append("<li>" + player_name + '</li>');
+	});
+	socket.emit("request players", room_code);
+</script>
