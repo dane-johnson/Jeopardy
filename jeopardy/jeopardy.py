@@ -8,6 +8,7 @@ from flask_socketio import SocketIO, send, emit, join_room
 
 from utils import Room, Contestant, generate_room_name
 
+#Constants
 BAD_ROOM_CODE = 1
 
 #Init application
@@ -41,21 +42,26 @@ def add_player(data):
 		if(data['host']):
 			emit("accept host")
 			active_rooms[room_code].add_host()
+			#Check to see if the game is ready
 			if active_rooms[room_code].is_ready:
 				emit("game ready", room=room_code, broadcast=True)
 		else:
 			name = data['username']
 			emit("accept player", name, broadcast=True, room=room_code)
 			active_rooms[room_code].add_contestant(Contestant(name))
+			#Check to see if the game is ready
 			if active_rooms[room_code].is_ready:
 				emit("game ready", room=room_code, broadcast=True)
 	else:
 		emit("error", BAD_ROOM_CODE)
 @socketio.on('create room')
 def create_room():
+	#Get a room from the generator
 	room_code = generate_room_name(active_rooms)
+	#Add it to the active rooms list as a new Room object
 	active_rooms[room_code] = Room(room_code)
 	join_room(room_code)
+	#Send it out
 	emit('room created', room_code)
 @socketio.on('request players')
 def send_players(room_code):
