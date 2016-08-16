@@ -21,7 +21,7 @@ app.config.update(dict(
 	SECRET_KEY="trebek_rex"
 	))
 
-#Frontend
+####################################  Frontend  ###############################
 @app.route('/')
 @app.route('/index')
 def index():
@@ -30,7 +30,7 @@ def index():
 def view(filename):
   return render_template(filename)
 
-#Backend
+####################################  Backend  ################################
 @socketio.on('player joined')
 def add_player(data):
 	# Find out if the room code is valid
@@ -41,13 +41,16 @@ def add_player(data):
 		if(data['host']):
 			emit("accept host")
 			active_rooms[room_code].add_host()
+			if active_rooms[room_code].is_ready:
+				emit("game ready", room=room_code, broadcast=True)
 		else:
 			name = data['username']
 			emit("accept player", name, broadcast=True, room=room_code)
 			active_rooms[room_code].add_contestant(Contestant(name))
+			if active_rooms[room_code].is_ready:
+				emit("game ready", room=room_code, broadcast=True)
 	else:
 		emit("error", BAD_ROOM_CODE)
-
 @socketio.on('create room')
 def create_room():
 	room_code = generate_room_name(active_rooms)
@@ -62,3 +65,6 @@ def send_players(room_code):
 		# This is a generator function that gets everyone's name
 		names = [player.name for player in players]
 		emit('player list', names)
+@socketio.on('start game')
+def start():
+	print "start game requested";

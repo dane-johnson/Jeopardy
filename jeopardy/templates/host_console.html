@@ -1,1 +1,32 @@
-<h1>HOST CONSOLE</h1>
+<h2>Players in game:</h2>
+<ul id=player_list></ul>
+<button id=start_game class=disabled>Start Game</button>
+<script>
+	socket.on("game ready", function()
+	{
+		$('button#start_game').removeClass("disabled");
+	});
+	$("button#start_game").on('click', function()
+	{
+		if(!$('button#start_game').hasClass('disabled'))
+		{
+			socket.emit("start game");
+		}
+	});
+	socket.on("player list", function(data)
+	{
+		console.log(data);
+		for (var i = 0; i < data.length; i++)
+		{
+			if(data[i] != name)
+			{
+				$("ul#player_list").append("<li>" + data[i] + '</li>');
+			}
+		}
+	});
+	socket.on("accept player", function(player_name)
+	{
+		$("ul").append("<li>" + player_name + '</li>');
+	});
+	socket.emit("request players", room_code);
+</script>
