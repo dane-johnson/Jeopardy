@@ -3,6 +3,7 @@ monkey.patch_all()
 
 #Lot of imports, buckle up
 import os
+import httplib
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, escape
 from flask_socketio import SocketIO, send, emit, join_room
 
@@ -12,6 +13,8 @@ from utils import Room, Contestant, generate_room_name
 BAD_ROOM_CODE = 1
 
 #Init application
+#Init connection to jservice service
+jservice = httplib.HTTPConnection('jservice.io')
 app = Flask(__name__)
 app.config.from_object(__name__)
 socketio = SocketIO(app)
@@ -29,7 +32,14 @@ def index():
 	return render_template("index.html")
 @app.route('/views/<path:filename>')
 def view(filename):
-  return render_template(filename)
+	# We route any requests for views through the server, so we can apply Flask and Jinja markup.
+	return render_template(filename)
+@app.route('/debug/')
+def get_category():
+	#Make a request for a random question
+	jservice.request('GET', '/api/random/')
+	return str(jservice.getresponse().read());
+
 
 ####################################  Backend  ################################
 @socketio.on('player joined')

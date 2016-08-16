@@ -24,7 +24,7 @@ class Room:
 	def add_contestant(self, contestant_name):
 		self._contestants[contestant_name] = Contestant(contestant_name)
 	def remove_contestant(self, contestant_name):
-		del self._contestants(contestant_name)
+		del self._contestants[contestant_name]
 	def add_host(self):
 		self._has_host = True
 	def remove_host(self):
