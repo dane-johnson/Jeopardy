@@ -47,7 +47,13 @@ def get_category():
 	if room_code != None and room_code in active_rooms.keys():
 		data = []
 		while len(data) < 1:
-			jservice.request('GET', '/api/random/')
+			done = False
+			while not done:
+				try:
+					jservice.request('GET', '/api/random/')
+					done = True
+				except httplib.CannotSendRequest:
+					continue
 			data = jservice.getresponse().read()
 			data = json.loads(data)
 		category_id, category_title = data[0]['category']['id'], data[0]['category']['title']
@@ -55,7 +61,13 @@ def get_category():
 		answers = []
 		while len(answers) < 5:
 			for i in range(200, 1200, 200):
-				jservice.request('GET', '/api/clues?category=%d&value=%d' % (category_id, i))
+				done = False
+				while not done:
+					try:
+						jservice.request('GET', '/api/clues?category=%d&value=%d' % (category_id, i))
+						done = True
+					except httplib.CannotSendRequest:
+						continue
 				data = jservice.getresponse().read()
 				data = json.loads(data)
 				if len(data) < 1:
