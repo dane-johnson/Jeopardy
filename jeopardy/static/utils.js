@@ -9,7 +9,7 @@ function getCategory(board)
 	{
 		board.categories = [];
 	}
-	$.get('/category/', function(data)
+	$.get('/category.json?room_code='+room_code, function(data)
 	{
 		board.categories.push(JSON.parse(data));
 		board.onLoad();

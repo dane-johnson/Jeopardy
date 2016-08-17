@@ -20,6 +20,7 @@ class Room:
 		self._room_code = room_code
 		self._contestants = {}
 		self._has_host = False
+		self._categories = []
 
 	def add_contestant(self, contestant_name):
 		self._contestants[contestant_name] = Contestant(contestant_name)
@@ -29,6 +30,8 @@ class Room:
 		self._has_host = True
 	def remove_host(self):
 		self._has_host = False
+	def add_category(self, category):
+		self._categories.append(category)
 	@property
 	def is_ready(self):
 		"""Checks boolean values to see if the game is ready"""

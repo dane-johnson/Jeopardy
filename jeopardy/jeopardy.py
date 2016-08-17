@@ -38,27 +38,32 @@ def debug(filename):
 def view(filename):
 	# We route any requests for views through the server, so we can apply Flask and Jinja markup.
 	return render_template(filename)
-@app.route('/category/')
+@app.route('/category.json', methods=['GET'])
 def get_category():
 	#Make a request for a random question
-	data = []
-	while len(data) < 1:
-		jservice.request('GET', '/api/random/')
-		data = jservice.getresponse().read()
-		data = json.loads(data)
-	category_id, category_title = data[0]['category']['id'], data[0]['category']['title']
-	questions = []
-	answers = []
-	while len(answers) < 5:
-		for i in range(200, 1200, 200):
-			jservice.request('GET', '/api/clues?category=%d&value=%d' % (category_id, i))
+	room_code = request.args.get('room_code')
+	if room_code != None and room_code in active_rooms.keys():
+		data = []
+		while len(data) < 1:
+			jservice.request('GET', '/api/random/')
 			data = jservice.getresponse().read()
 			data = json.loads(data)
-			if len(data) < 1:
-				break
-			questions.append(data[0]['question'])
-			answers.append(data[0]['answer'])
-	return json.dumps({'category': category_title, 'questions':questions, 'answers':answers})
+		category_id, category_title = data[0]['category']['id'], data[0]['category']['title']
+		questions = []
+		answers = []
+		while len(answers) < 5:
+			for i in range(200, 1200, 200):
+				jservice.request('GET', '/api/clues?category=%d&value=%d' % (category_id, i))
+				data = jservice.getresponse().read()
+				data = json.loads(data)
+				if len(data) < 1:
+					break
+				questions.append(data[0]['question'])
+				answers.append(data[0]['answer'])
+		category = {'category': category_title, 'questions':questions, 'answers':answers}
+		# I'll cache the category locally, to display questions and answers for host
+		active_rooms[room_code].add_category(category)
+		return json.dumps(category)
 
 
 ####################################  Backend  ################################
