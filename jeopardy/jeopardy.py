@@ -4,6 +4,7 @@ monkey.patch_all()
 #Lot of imports, buckle up
 import os
 import httplib
+import json
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, escape
 from flask_socketio import SocketIO, send, emit, join_room
 
@@ -34,11 +35,27 @@ def index():
 def view(filename):
 	# We route any requests for views through the server, so we can apply Flask and Jinja markup.
 	return render_template(filename)
-@app.route('/debug/')
+@app.route('/category/')
 def get_category():
 	#Make a request for a random question
-	jservice.request('GET', '/api/random/')
-	return str(jservice.getresponse().read());
+	data = []
+	while len(data) < 1:
+		jservice.request('GET', '/api/random/')
+		data = jservice.getresponse().read()
+		data = json.loads(data)
+	category_id, category_title = data[0]['category']['id'], data[0]['category']['title']
+	questions = []
+	answers = []
+	while len(answers) < 5:
+		for i in range(200, 1200, 200):
+			jservice.request('GET', '/api/clues?category=%d&value=%d' % (category_id, i))
+			data = jservice.getresponse().read()
+			data = json.loads(data)
+			if len(data) < 1:
+				break
+			questions.append(data[0]['question'])
+			answers.append(data[0]['answer'])
+	return json.dumps({'category': category_title, 'questions':questions, 'answers':answers})
 
 
 ####################################  Backend  ################################

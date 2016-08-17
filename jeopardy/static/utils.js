@@ -3,12 +3,15 @@ function switchView(view)
 	$("div#dynamic").load(view)
 }
 
-var obj;
-function getCategory()
+function getCategory(game)
 {
-	obj = $.get('/debug/', function(data)
+	if(! ('categories' in game))
 	{
-		console.log(data);
+		game.categories = [];
+	}
+	$.get('/category/', function(data)
+	{
+		game.categories.push(JSON.parse(data));
 	});
 }
 
