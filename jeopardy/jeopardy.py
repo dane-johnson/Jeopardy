@@ -31,6 +31,9 @@ app.config.update(dict(
 @app.route('/index')
 def index():
 	return render_template("index.html")
+@app.route('/debug/<path:filename>')
+def debug(filename):
+	return render_template("debug.html", file=filename)
 @app.route('/views/<path:filename>')
 def view(filename):
 	# We route any requests for views through the server, so we can apply Flask and Jinja markup.
@@ -100,4 +103,4 @@ def send_players(room_code):
 		emit('player list', names)
 @socketio.on('start game')
 def start():
-	print "start game requested";
+	emit('game started', broadcast=True)

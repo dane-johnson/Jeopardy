@@ -14,5 +14,10 @@
 		$("ul#player_list").append("<li>" + name + "</li>");
 	});
 
+	socket.on("game started", function()
+	{
+		switchView('/views/gameboard.html')
+	});
+
 	socket.emit("create room");
 </script>

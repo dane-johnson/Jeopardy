@@ -3,16 +3,22 @@ function switchView(view)
 	$("div#dynamic").load(view)
 }
 
-function getCategory(game)
+function getCategory(board)
 {
-	if(! ('categories' in game))
+	if(! ('categories' in board))
 	{
-		game.categories = [];
+		board.categories = [];
 	}
 	$.get('/category/', function(data)
 	{
-		game.categories.push(JSON.parse(data));
+		board.categories.push(JSON.parse(data));
+		board.onLoad();
 	});
 }
 
+function Board()
+{
+	this.onLoad = null;
+	this.categories = [];
+}
 var BAD_ROOM_CODE = 1;

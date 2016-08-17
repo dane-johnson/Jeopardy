@@ -1,3 +1,31 @@
 <table id=board>
 <!-- I will dynamically generate this, using ajax calls to jservice.io -->
 </table>
+<script>
+	var board = new Board();
+	board.onLoad = function()
+	{
+		if(board.categories.length == 6){
+			$board.append("<tr>");
+			for(var i = 0; i < 6; i++)
+			{
+				$board.append('<th>' + board.categories[i].category + "</th>");
+			}
+			$board.append("</tr>");
+			for(var i = 0; i < 5; i++)
+			{
+				$board.append("<tr>");
+				for(var j = 0; j < 6; j++)
+				{
+					$board.append("<td>$" + ((i + 1) * 200) + "</td>");
+				}
+				$board.append("</tr>")
+			}
+		}
+	}
+	var $board = $('table#board');
+	for(var i = 0; i < 6; i++)
+	{
+		getCategory(board);
+	}
+</script>
