@@ -1,3 +1,6 @@
+#Flags
+DEBUG = True
+
 from gevent import monkey
 monkey.patch_all()
 
@@ -20,6 +23,8 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 socketio = SocketIO(app)
 active_rooms = {}
+if DEBUG:
+	active_rooms['AAAA'] = Room('AAAA')
 
 #Load default config and override config from an environment variable
 app.config.update(dict(
@@ -31,9 +36,6 @@ app.config.update(dict(
 @app.route('/index')
 def index():
 	return render_template("index.html")
-@app.route('/debug/<path:filename>')
-def debug(filename):
-	return render_template("debug.html", file=filename)
 @app.route('/views/<path:filename>')
 def view(filename):
 	# We route any requests for views through the server, so we can apply Flask and Jinja markup.
@@ -64,6 +66,11 @@ def get_category():
 		# I'll cache the category locally, to display questions and answers for host
 		active_rooms[room_code].add_category(category)
 		return json.dumps(category)
+
+if DEBUG:
+	@app.route('/debug/<path:filename>')
+	def debug(filename):
+		return render_template("debug.html", file=filename)
 
 
 ####################################  Backend  ################################
