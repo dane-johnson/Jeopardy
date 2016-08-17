@@ -77,9 +77,6 @@ def add_player(data):
 		if(data['host']):
 			emit("accept host")
 			active_rooms[room_code].add_host()
-			#Check to see if the game is ready
-			if active_rooms[room_code].is_ready:
-				emit("game ready", room=room_code, broadcast=True)
 		else:
 			name = data['username']
 			emit("accept player", name, broadcast=True, room=room_code)
@@ -109,3 +106,8 @@ def send_players(room_code):
 @socketio.on('start game')
 def start():
 	emit('game started', broadcast=True)
+@socketio.on("host ready")
+def host_ready(room_code):
+	if room_code != None and active_rooms[room_code].is_ready:
+		print 'host is ready'
+		emit("game ready", room=room_code, broadcast=True)

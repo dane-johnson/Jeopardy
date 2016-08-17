@@ -28,4 +28,5 @@
 		$("ul").append("<li>" + player_name + '</li>');
 	});
 	socket.emit("request players", room_code);
+	socket.emit("host ready", room_code);
 </script>

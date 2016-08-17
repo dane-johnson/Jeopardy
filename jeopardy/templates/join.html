@@ -17,6 +17,7 @@
 	socket.on("accept host", function()
 	{
 		//Make sure the accept player event does not fire
+		room_code = $("input[name=room_code]").val();
 		socket.removeListener("accept player");
 		switchView('/views/host_console.html');
 	});
